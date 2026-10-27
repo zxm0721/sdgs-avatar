@@ -60,6 +60,15 @@ figure img {
   border-radius: 6px;
   border: 1px solid var(--border);
 }
+figure video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #000;
+}
 figure.narrow { max-width: 760px; margin-left: auto; margin-right: auto; }
 figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 8px; text-align: center; }
 

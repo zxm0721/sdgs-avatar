@@ -41,6 +41,20 @@
   </section>
 
   <section>
+    <h3>演示视频</h3>
+    <div class="grid-2 align-start">
+      <figure>
+        <video src="static/videos/demo_street.mp4" poster="static/videos/demo_street.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
+        <figcaption>游戏角色资产在街道场景中的文本驱动动画。</figcaption>
+      </figure>
+      <figure>
+        <video src="static/videos/demo_track.mp4" poster="static/videos/demo_track.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
+        <figcaption>真人半身照重建的数字人在三维高斯体育场场景中奔跑。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
     <h3>摘要</h3>
     <p>
       现有三维高斯数字人生成方法对输入质量要求苛刻，动态运动中容易因局部信息缺失导致衣物几何不连续，可控性与时序一致性也不足。针对这些问题，本文提出一种仅以单张半身照为输入、融合生成式补全与衣物结构解耦的数字人动画生成框架。首先，设计生成式补全与主体提取相结合的预处理模块，提升单图重建的完整性与身份一致性；继而，构建面向服装区域的结构解耦重建模块（CDRM），通过目标包络估计、高斯克隆与属性迁移实现复杂衣物的连续补全；再引入历史感知运动门控模块（PAMG），自适应抑制动作序列中的局部抖动、时序间断与幅值异常；最后，将优化后的动作序列作用于修复后的三维高斯表示，实现可部署于多种三维场景的文本可控数字人动画。
