@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>基于结构解耦的三维高斯数字人动画生成</title>
+  <meta name="description" content="3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling — 仅以单张半身照为输入的文本可控三维高斯数字人动画生成。">
+  <meta property="og:title" content="3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling">
+  <meta property="og:image" content="static/images/fig02_framework.jpg">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<header class="hero">
+  <h1>基于结构解耦的三维高斯数字人动画生成</h1>
+  <h2 class="subtitle">3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling</h2>
+
+  <p class="authors">
+    王雪平<sup>1</sup>，廖偲宇<sup>1</sup>，黄迪<sup>2,*</sup>，闫飞虎<sup>1</sup>，赵光哲<sup>1</sup>
+  </p>
+  <p class="affiliations">
+    <sup>1</sup>北京建筑大学智能科学与技术学院 &nbsp;&nbsp;
+    <sup>2</sup>北京航空航天大学计算机学院<br>
+    <sup>*</sup>通信作者
+  </p>
+  <p class="venue">计算机辅助设计与图形学学报（审稿中）</p>
+
+  <nav class="links">
+    <span class="btn disabled" title="论文正式发表后开放">论文 Paper（即将发布）</span>
+    <span class="btn disabled" title="代码整理中">代码 Code（即将发布）</span>
+  </nav>
+</header>
+
+<main>
+
+  <section>
+    <figure>
+      <img src="static/images/fig01_task.jpg" alt="任务示意图：单张半身照与文本输入，输出可在多场景中驱动的三维高斯数字人">
+      <figcaption>图 1&nbsp; 任务示意：输入单张半身照和一段动作文本，生成可部署到多种三维场景的三维高斯数字人动画。</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h3>摘要</h3>
+    <p>
+      现有三维高斯数字人生成方法对输入质量要求苛刻，动态运动中容易因局部信息缺失导致衣物几何不连续，可控性与时序一致性也不足。针对这些问题，本文提出一种仅以单张半身照为输入、融合生成式补全与衣物结构解耦的数字人动画生成框架。首先，设计生成式补全与主体提取相结合的预处理模块，提升单图重建的完整性与身份一致性；继而，构建面向服装区域的结构解耦重建模块（CDRM），通过目标包络估计、高斯克隆与属性迁移实现复杂衣物的连续补全；再引入历史感知运动门控模块（PAMG），自适应抑制动作序列中的局部抖动、时序间断与幅值异常；最后，将优化后的动作序列作用于修复后的三维高斯表示，实现可部署于多种三维场景的文本可控数字人动画。
+    </p>
+  </section>
+
+  <section>
+    <h3>方法概览</h3>
+    <figure>
+      <img src="static/images/fig02_framework.jpg" alt="整体框架图">
+      <figcaption>图 2&nbsp; 整体框架：生成式补全 → LHM 规范空间三维高斯重建 → 衣物结构解耦重建（CDRM）；文本 → HY-Motion → 历史感知运动门控（PAMG）→ 驱动与多场景渲染。</figcaption>
+    </figure>
+
+    <div class="grid-2">
+      <figure>
+        <img src="static/images/fig03_cdrm_pipeline.jpg" alt="CDRM 流程">
+        <figcaption>图 3&nbsp; CDRM 流程：参考高斯筛选、目标包络估计、高斯克隆与属性迁移、simple-kNN 运动绑定。</figcaption>
+      </figure>
+      <figure>
+        <img src="static/images/fig04_cdrm_geometry.jpg" alt="CDRM 几何示意">
+        <figcaption>图 4&nbsp; 包络补全的几何形式：根据当前包络与目标包络的垂向差值 Δy(u) 克隆源高斯。</figcaption>
+      </figure>
+    </div>
+
+    <figure class="narrow">
+      <img src="static/images/fig05_pamg.jpg" alt="PAMG 模块示意">
+      <figcaption>图 5&nbsp; PAMG：因果时序编码器结合运动幅值描述符估计门控权重，自适应调节平滑强度，并以残差裁剪限制单帧修正幅度。</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h3>静态重建对比</h3>
+    <figure>
+      <img src="static/images/fig06_comparison.jpg" alt="与现有方法的重建对比">
+      <figcaption>图 6&nbsp; 与 SiTH、SV4D、DreamGaussian、GTA、SiFU、PSHuman、PERSONA、LHM 的定性对比。</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h3>消融实验</h3>
+    <div class="grid-2 align-start">
+      <figure>
+        <img src="static/images/fig07_completion_ablation.jpg" alt="生成式补全消融">
+        <figcaption>图 7&nbsp; 生成式补全预处理消融。</figcaption>
+      </figure>
+      <figure>
+        <img src="static/images/fig08_partial_inputs.jpg" alt="多姿态局部输入对比">
+        <figcaption>图 8&nbsp; 侧身、背身等局部输入下与 LHM 的对比。</figcaption>
+      </figure>
+    </div>
+    <figure>
+      <img src="static/images/fig09_cdrm_ablation.jpg" alt="CDRM 消融">
+      <figcaption>图 9&nbsp; CDRM 消融：去除 CDRM 后宽松裙装易出现前片缺失与驱动失稳。</figcaption>
+    </figure>
+    <figure>
+      <img src="static/images/fig10_pamg_ablation.jpg" alt="PAMG 消融">
+      <figcaption>图 10&nbsp; PAMG 消融：w/o PAMG 的人物位于完整模型后方偏右 45°，右侧为动作幅度开始变化的关键帧。</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h3>多场景应用</h3>
+    <figure class="narrow">
+      <img src="static/images/fig11_multiscene.jpg" alt="多场景渲染结果">
+      <figcaption>图 11&nbsp; 不同类型数字人资产在不同三维场景中的渲染结果（第二、四行为半身输入）。</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h3>定量结果</h3>
+    <p class="note">定量结果正在按审稿意见补充实验并重新核算，修订完成后在此更新。</p>
+  </section>
+
+  <section>
+    <h3>引用</h3>
+    <pre class="bibtex">@article{wang2026sdgs,
+  title   = {基于结构解耦的三维高斯数字人动画生成},
+  author  = {王雪平 and 廖偲宇 and 黄迪 and 闫飞虎 and 赵光哲},
+  journal = {计算机辅助设计与图形学学报},
+  year    = {2026},
+  note    = {审稿中}
+}</pre>
+  </section>
+
+</main>
+
+<footer>
+  <p>本工作得到国家自然科学基金（62402026）和北京市教育委员会科研计划项目（KM202410016010）资助。</p>
+</footer>
+
+</body>
+</html>
