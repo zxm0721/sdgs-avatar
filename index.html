@@ -3,98 +3,321 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>基于结构解耦的三维高斯数字人动画生成</title>
-  <meta name="description" content="3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling — 仅以单张半身照为输入的文本可控三维高斯数字人动画生成。">
-  <meta property="og:title" content="3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling">
-  <meta property="og:image" content="static/images/fig02_framework.jpg">
+  <meta name="theme-color" content="#080b16">
+  <meta name="description" content="基于结构解耦的三维高斯数字人动画生成：仅以单张半身照为输入，结合衣物结构解耦与文本驱动动作，在多种三维场景中展示可动画数字人。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="基于结构解耦的三维高斯数字人动画生成 | SDGS Avatar">
+  <meta property="og:description" content="Single-image 3D Gaussian Avatar • Text-Driven Animation • Garment Reconstruction">
+  <meta property="og:image" content="https://zxm0721.github.io/sdgs-avatar/static/images/fig01_task.jpg">
+  <title>基于结构解耦的三维高斯数字人动画生成 | SDGS Avatar</title>
   <link rel="stylesheet" href="static/css/style.css">
 </head>
-<body>
-
-<header class="hero">
-  <h1>基于结构解耦的三维高斯数字人动画生成</h1>
-  <h2 class="subtitle">3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling</h2>
-
-  <p class="authors">
-    王雪平<sup>1</sup>，廖偲宇<sup>1</sup>，黄迪<sup>2,*</sup>，闫飞虎<sup>1</sup>，赵光哲<sup>1</sup>
-  </p>
-  <p class="affiliations">
-    <sup>1</sup>北京建筑大学智能科学与技术学院 &nbsp;&nbsp;
-    <sup>2</sup>北京航空航天大学计算机学院<br>
-    <sup>*</sup>通信作者
-  </p>
-  <p class="venue">计算机辅助设计与图形学学报（审稿中）</p>
-
-  <nav class="links">
-    <span class="btn disabled" title="论文正式发表后开放">论文 Paper（即将发布）</span>
-    <span class="btn disabled" title="代码整理中">代码 Code（即将发布）</span>
+<body id="top">
+  <nav class="topbar" aria-label="页面导航">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="返回主页顶部">
+        <span class="brand-symbol" aria-hidden="true">✦</span>
+        <span class="brand-name">SDGS <span>/ AVATAR</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#overview">研究概览</a>
+        <a href="#demos">演示视频</a>
+        <a href="#method">核心方法</a>
+        <a href="#abstract">论文摘要</a>
+        <a href="#citation">引用</a>
+      </div>
+      <a class="nav-cta" href="#demos">观看演示 <span aria-hidden="true">↗</span></a>
+    </div>
   </nav>
-</header>
 
-<main>
-
-  <section>
-    <figure>
-      <img src="static/images/fig01_task.jpg" alt="任务示意图：单张半身照与文本输入，输出可在多场景中驱动的三维高斯数字人">
-      <figcaption>图 1&nbsp; 任务示意：输入单张半身照和一段动作文本，生成可部署到多种三维场景的三维高斯数字人动画。</figcaption>
-    </figure>
-  </section>
-
-  <section>
-    <h3>演示视频</h3>
-    <div class="grid-2 align-start">
-      <figure>
-        <video src="static/videos/demo_street.mp4" poster="static/videos/demo_street.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
-        <figcaption>重建游戏角色在街道场景中的文本驱动动画。</figcaption>
-      </figure>
-      <figure>
-        <video src="static/videos/demo_track.mp4" poster="static/videos/demo_track.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
-        <figcaption>真人半身照重建的数字人在三维高斯体育场场景中奔跑。</figcaption>
-      </figure>
+  <header class="hero">
+    <div class="hero-halo one" aria-hidden="true"></div>
+    <div class="hero-halo two" aria-hidden="true"></div>
+    <canvas class="particle-canvas" id="particle-canvas" aria-hidden="true"></canvas>
+    <div class="hero-content">
+      <div class="eyebrow hero-eyebrow"><span class="pulse-dot" aria-hidden="true"></span> RESEARCH PROJECT · 2026</div>
+      <h1>基于结构解耦的<br><span class="gradient-text">三维高斯数字人动画生成</span></h1>
+      <h2 class="subtitle">3D Gaussian Splatting Digital Human Animation Generation<br class="desktop-break"> Based on Structural Decoupling</h2>
+      <p class="hero-description"><strong>单张半身照</strong> → 三维高斯数字人 → <strong>文本驱动动画</strong><br>让服装细节与自然动作，在多种三维场景中连续呈现。</p>
+      <p class="authors">王雪平<sup>1</sup> · 廖偲宇<sup>1</sup> · 黄迪<sup>2,*</sup> · 闫飞虎<sup>1</sup> · 赵光哲<sup>1</sup></p>
+      <p class="affiliations"><sup>1</sup> 北京建筑大学智能科学与技术学院 &nbsp;&nbsp; <sup>2</sup> 北京航空航天大学计算机学院<br><sup>*</sup> 通信作者</p>
+      <div class="venue">《计算机辅助设计与图形学学报》 · 审稿中</div>
+      <div class="hero-actions">
+        <a class="btn primary" href="#demos">▶ &nbsp;观看演示视频</a>
+        <a class="btn secondary" href="#method">探索核心方法 <span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="availability-line">Paper · 即将发布 &nbsp;&nbsp; / &nbsp;&nbsp; Code · 整理中</p>
+      <div class="scroll-hint" aria-hidden="true">SCROLL TO EXPLORE <b>↓</b></div>
     </div>
-    <div class="grid-2 align-start" style="margin-top: 16px;">
-      <figure>
-        <video class="full-body-demo" src="static/videos/demo_anime.mp4" poster="static/videos/demo_anime.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
-        <figcaption>动漫卡通风格人物在三维场景中的动画演示。</figcaption>
+  </header>
+
+  <main>
+    <section class="section" id="overview" aria-labelledby="overview-heading">
+      <div class="section-header center reveal">
+        <p class="section-kicker">01 / OVERVIEW</p>
+        <h2 class="section-heading" id="overview-heading">从一张照片，到可动画的三维数字人</h2>
+        <p class="section-intro">融合生成式补全、衣物结构解耦与动作时序优化，连接单图重建和多场景人物动画。</p>
+      </div>
+      <figure class="showcase reveal">
+        <img src="static/images/fig01_task.jpg" loading="eager" alt="任务示意图：由单张半身人像与动作文本生成可在三维场景中动画驱动的高斯数字人">
+        <figcaption>任务示意 · 单张半身照 + 动作文本 → 三维高斯数字人动画</figcaption>
       </figure>
-      <figure>
-        <video class="full-body-demo" src="static/videos/demo_skirt.mp4" poster="static/videos/demo_skirt.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
-        <figcaption>真实渲染裙摆人物在室内场景中的动画演示。</figcaption>
+      <div class="feature-strip reveal" aria-label="研究特点">
+        <div class="feature-chip">
+          <div class="chip-icon" aria-hidden="true">01</div>
+          <div><strong>Single Image</strong><span>仅需单张半身照片作为输入</span></div>
+        </div>
+        <div class="feature-chip">
+          <div class="chip-icon" aria-hidden="true">02</div>
+          <div><strong>Garment-Aware 3DGS</strong><span>面向衣物区域的结构解耦重建</span></div>
+        </div>
+        <div class="feature-chip">
+          <div class="chip-icon" aria-hidden="true">03</div>
+          <div><strong>Text-Driven Motion</strong><span>历史感知的动作优化与场景渲染</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="demos" aria-labelledby="demos-heading">
+      <div class="section-header center reveal">
+        <p class="section-kicker">02 / LIVE DEMONSTRATIONS</p>
+        <h2 class="section-heading" id="demos-heading">动态演示 · 让结果自己说话</h2>
+        <p class="section-intro">从游戏角色到写实数字人，展示不同风格、服装与场景下的运动效果。</p>
+      </div>
+      <div class="demo-grid">
+        <article class="demo-card reveal">
+          <div class="video-shell">
+            <span class="media-label">GAME CHARACTER</span>
+            <video src="static/videos/demo_street.mp4" poster="static/videos/demo_street.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="重建游戏角色在街道场景中运动的演示视频"></video>
+          </div>
+          <div class="demo-information">
+            <span class="demo-number">01</span>
+            <div><h3>街道场景 · 游戏角色</h3><p>重建游戏角色在街道场景中的文本驱动动画。</p></div>
+          </div>
+        </article>
+        <article class="demo-card reveal">
+          <div class="video-shell">
+            <span class="media-label">REALISTIC AVATAR</span>
+            <video src="static/videos/demo_track.mp4" poster="static/videos/demo_track.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="真人半身照重建的数字人在体育场奔跑的演示视频"></video>
+          </div>
+          <div class="demo-information">
+            <span class="demo-number">02</span>
+            <div><h3>体育场景 · 写实数字人</h3><p>真人半身照重建的数字人在三维高斯体育场场景中奔跑。</p></div>
+          </div>
+        </article>
+        <article class="demo-card reveal">
+          <div class="video-shell">
+            <span class="media-label">ANIME STYLE</span>
+            <video class="full-body-demo" src="static/videos/demo_anime.mp4" poster="static/videos/demo_anime.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="动漫卡通风格角色的动画演示视频"></video>
+          </div>
+          <div class="demo-information">
+            <span class="demo-number">03</span>
+            <div><h3>动漫风格 · 卡通人物</h3><p>动漫卡通风格人物在三维场景中的动画演示。</p></div>
+          </div>
+        </article>
+        <article class="demo-card reveal">
+          <div class="video-shell">
+            <span class="media-label">GARMENT MOTION</span>
+            <video class="full-body-demo" src="static/videos/demo_skirt.mp4" poster="static/videos/demo_skirt.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="真实渲染裙摆人物的动画演示视频"></video>
+          </div>
+          <div class="demo-information">
+            <span class="demo-number">04</span>
+            <div><h3>写实渲染 · 裙摆人物</h3><p>真实渲染裙摆人物在室内场景中的动画演示。</p></div>
+          </div>
+        </article>
+      </div>
+      <p class="demo-note">点击播放器可暂停、调整进度或全屏查看；视频默认静音播放。</p>
+    </section>
+
+    <section class="section" id="method" aria-labelledby="method-heading">
+      <div class="section-header center reveal">
+        <p class="section-kicker">03 / OUR APPROACH</p>
+        <h2 class="section-heading" id="method-heading">核心方法 · 从几何重建到动作驱动</h2>
+        <p class="section-intro">围绕输入补全、衣物修复与运动稳定性，建立面向可动画数字人的完整处理流程。</p>
+      </div>
+      <div class="method-grid">
+        <div class="method-card reveal">
+          <span class="method-index">STAGE / 01</span>
+          <h3>生成式补全与主体提取</h3>
+          <p>从单张半身照片出发，补充人物缺失区域，为后续三维高斯重建提供更完整的输入。</p>
+        </div>
+        <div class="method-card reveal">
+          <span class="method-index">STAGE / 02</span>
+          <h3>衣物结构解耦 · CDRM</h3>
+          <p>通过包络估计、高斯克隆与属性迁移，处理复杂服装区域的几何不连续问题。</p>
+        </div>
+        <div class="method-card reveal">
+          <span class="method-index">STAGE / 03</span>
+          <h3>历史感知运动门控 · PAMG</h3>
+          <p>结合 HY-Motion 动作序列进行时序优化，抑制局部抖动与动作幅值异常。</p>
+        </div>
+      </div>
+      <figure class="showcase method-figure reveal">
+        <img src="static/images/fig02_framework.jpg" loading="lazy" alt="框架图：生成式补全、LHM 三维高斯重建、CDRM 衣物结构解耦、HY-Motion 与 PAMG 时序优化">
+        <figcaption>整体方法框架 · 生成式补全 / 3DGS 重建 / CDRM / HY-Motion / PAMG</figcaption>
       </figure>
-    </div>
-  </section>
+    </section>
 
-  <section>
-    <h3>摘要</h3>
-    <p>
-      现有三维高斯数字人生成方法对输入质量要求苛刻，动态运动中容易因局部信息缺失导致衣物几何不连续，可控性与时序一致性也不足。针对这些问题，本文提出一种仅以单张半身照为输入、融合生成式补全与衣物结构解耦的数字人动画生成框架。首先，设计生成式补全与主体提取相结合的预处理模块，提升单图重建的完整性与身份一致性；继而，构建面向服装区域的结构解耦重建模块（CDRM），通过目标包络估计、高斯克隆与属性迁移实现复杂衣物的连续补全；再引入历史感知运动门控模块（PAMG），自适应抑制动作序列中的局部抖动、时序间断与幅值异常；最后，将优化后的动作序列作用于修复后的三维高斯表示，实现可部署于多种三维场景的文本可控数字人动画。
-    </p>
-  </section>
+    <section class="section" id="abstract" aria-labelledby="abstract-heading">
+      <div class="abstract-box reveal">
+        <div class="abstract-side">
+          <span aria-hidden="true"></span>
+          <h2 id="abstract-heading">论文摘要</h2>
+          <p>04 / ABSTRACT</p>
+        </div>
+        <div class="abstract-body">
+          <p>现有三维高斯数字人生成方法对输入质量要求苛刻，动态运动中容易因局部信息缺失导致衣物几何不连续，可控性与时序一致性也不足。针对这些问题，本文提出一种仅以单张半身照为输入、融合生成式补全与衣物结构解耦的数字人动画生成框架。首先，设计生成式补全与主体提取相结合的预处理模块，提升单图重建的完整性与身份一致性；继而，构建面向服装区域的结构解耦重建模块（CDRM），通过目标包络估计、高斯克隆与属性迁移实现复杂衣物的连续补全；再引入历史感知运动门控模块（PAMG），自适应抑制动作序列中的局部抖动、时序间断与幅值异常；最后，将优化后的动作序列作用于修复后的三维高斯表示，实现可部署于多种三维场景的文本可控数字人动画。</p>
+        </div>
+      </div>
+    </section>
 
-  <section>
-    <h3>方法概览</h3>
-    <figure>
-      <img src="static/images/fig02_framework.jpg" alt="整体框架图">
-      <figcaption>图 2&nbsp; 整体框架：生成式补全 → LHM 规范空间三维高斯重建 → 衣物结构解耦重建（CDRM）；文本 → HY-Motion → 历史感知运动门控（PAMG）→ 驱动与多场景渲染。</figcaption>
-    </figure>
-  </section>
-
-  <section>
-    <h3>引用</h3>
-    <pre class="bibtex">@article{wang2026sdgs,
+    <section class="section" id="citation" aria-labelledby="citation-heading">
+      <div class="section-header center reveal">
+        <p class="section-kicker">05 / CITATION</p>
+        <h2 class="section-heading" id="citation-heading">引用本工作</h2>
+        <p class="section-intro">论文当前仍在审稿中，正式发表信息请以最终版本为准。</p>
+      </div>
+      <div class="citation-card reveal">
+        <div class="citation-top">
+          <span class="citation-file"><span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span> BibTeX</span>
+          <button type="button" class="copy-btn" id="copy-citation">复制引用 ↗</button>
+        </div>
+        <pre class="bibtex" id="citation-text">@article{wang2026sdgs,
   title   = {基于结构解耦的三维高斯数字人动画生成},
   author  = {王雪平 and 廖偲宇 and 黄迪 and 闫飞虎 and 赵光哲},
   journal = {计算机辅助设计与图形学学报},
   year    = {2026},
   note    = {审稿中}
 }</pre>
-  </section>
+        <p class="copy-feedback" id="copy-feedback" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
 
-</main>
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-brand">SDGS / AVATAR · RESEARCH PROJECT</p>
+      <p>本工作得到国家自然科学基金（62402026）和北京市教育委员会科研计划项目（KM202410016010）资助。</p>
+      <p>© 2026 · 北京建筑大学智能科学与技术学院</p>
+    </div>
+  </footer>
 
-<footer>
-  <p>本工作得到国家自然科学基金（62402026）和北京市教育委员会科研计划项目（KM202410016010）资助。</p>
-</footer>
+  <a href="#top" class="back-top" id="back-top" aria-label="返回页面顶部">↑</a>
 
+  <script>
+  (function () {
+    'use strict';
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var revealElements = document.querySelectorAll('.reveal');
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      document.documentElement.classList.add('js-motion');
+      var observer = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -18px 0px' });
+      revealElements.forEach(function (element) { observer.observe(element); });
+    }
+    var topButton = document.getElementById('back-top');
+    function updateTopButton() {
+      topButton.classList.toggle('show', window.scrollY > 580);
+    }
+    window.addEventListener('scroll', updateTopButton, { passive: true });
+    updateTopButton();
+
+    var copyButton = document.getElementById('copy-citation');
+    var copyFeedback = document.getElementById('copy-feedback');
+    copyButton.addEventListener('click', function () {
+      var citationText = document.getElementById('citation-text').textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(citationText).then(function () {
+          copyFeedback.textContent = '✓ BibTeX 已复制到剪贴板';
+          copyButton.textContent = '已复制 ✓';
+          window.setTimeout(function () { copyButton.textContent = '复制引用 ↗'; copyFeedback.textContent = ''; }, 2800);
+        }).catch(function () {
+          copyFeedback.textContent = '无法自动复制，请选中下方 BibTeX 手动复制。';
+        });
+      } else {
+        copyFeedback.textContent = '请选中下方 BibTeX 手动复制。';
+      }
+    });
+
+    if (reduceMotion) return;
+    var canvas = document.getElementById('particle-canvas');
+    var context = canvas && canvas.getContext('2d');
+    if (!context) return;
+    var hero = canvas.parentElement;
+    var particles = [];
+    var width = 0;
+    var height = 0;
+    var pointer = { x: -9999, y: -9999 };
+    var frame = 0;
+    var previousTime = 0;
+    function random(min, max) { return min + Math.random() * (max - min); }
+    function resizeParticles() {
+      width = hero.clientWidth;
+      height = hero.clientHeight;
+      var scale = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * scale);
+      canvas.height = Math.round(height * scale);
+      context.setTransform(scale, 0, 0, scale, 0, 0);
+      var count = Math.min(125, Math.max(44, Math.round(width * height / 10000)));
+      particles = [];
+      for (var i = 0; i < count; i++) {
+        particles.push({
+          x: random(0, width), y: random(0, height),
+          radius: random(.65, 2.3), shift: random(4, 24),
+          phase: random(0, 6.28), alpha: random(.19, .64),
+          cyan: i % 3 === 0
+        });
+      }
+    }
+    function draw(time) {
+      frame = 0;
+      if (document.hidden) return;
+      if (time - previousTime > 33) {
+        previousTime = time;
+        context.clearRect(0, 0, width, height);
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          var x = p.x + Math.sin(time * .00024 + p.phase) * p.shift;
+          var y = p.y + Math.cos(time * .00018 + p.phase) * p.shift;
+          context.globalAlpha = p.alpha;
+          context.fillStyle = p.cyan ? '#72e7ee' : '#a4a0ff';
+          context.beginPath();
+          context.arc(x, y, p.radius, 0, 6.2832);
+          context.fill();
+          var dx = x - pointer.x, dy = y - pointer.y;
+          if (dx * dx + dy * dy < 15000) {
+            context.beginPath();
+            context.moveTo(x, y);
+            context.lineTo(pointer.x, pointer.y);
+            context.strokeStyle = '#89ccff';
+            context.globalAlpha = .17;
+            context.lineWidth = .65;
+            context.stroke();
+          }
+        }
+        context.globalAlpha = 1;
+      }
+      frame = window.requestAnimationFrame(draw);
+    }
+    hero.addEventListener('pointermove', function (event) {
+      var rect = hero.getBoundingClientRect();
+      pointer.x = event.clientX - rect.left;
+      pointer.y = event.clientY - rect.top;
+    }, { passive: true });
+    hero.addEventListener('pointerleave', function () { pointer.x = -9999; pointer.y = -9999; });
+    window.addEventListener('resize', resizeParticles, { passive: true });
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && !frame) frame = window.requestAnimationFrame(draw);
+    });
+    resizeParticles();
+    frame = window.requestAnimationFrame(draw);
+  }());
+  </script>
 </body>
 </html>
