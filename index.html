@@ -1,183 +1,220 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="基于结构解耦的三维高斯数字人动画生成：仅以单张半身照为输入，结合衣物结构解耦与文本驱动动作，生成可部署于多种三维场景的数字人动画。">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="基于结构解耦的三维高斯数字人动画生成">
-  <meta property="og:description" content="3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling">
-  <meta property="og:image" content="https://zxm0721.github.io/sdgs-avatar/static/images/fig01_task.jpg">
-  <title>基于结构解耦的三维高斯数字人动画生成 · Project Page</title>
+  <title>基于结构解耦的三维高斯数字人动画生成</title>
+  <meta name="description" content="3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling — 仅以单张半身照为输入的文本可控三维高斯数字人动画生成。">
+  <meta property="og:title" content="3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling">
+  <meta property="og:description" content="单张半身照 + 一句动作文本 → 可在多种三维场景中驱动的三维高斯数字人。">
+  <meta property="og:image" content="static/images/fig01_task.jpg">
+  <meta name="theme-color" content="#f6f5f1">
   <link rel="stylesheet" href="static/css/style.css">
 </head>
-<body id="top">
-  <nav class="site-nav" aria-label="页面导航">
-    <div class="nav-content">
-      <a href="#top" class="wordmark">SDGS Avatar</a>
-      <div class="nav-menu">
-        <a href="#abstract">Abstract</a>
-        <a href="#method">Method</a>
-        <a href="#results">Results</a>
-        <a href="#bibtex">BibTeX</a>
+<body>
+
+<a class="skip" href="#main">跳到正文</a>
+
+<nav class="toc" aria-label="页面导航">
+  <a href="#top" class="toc-brand">SD-GS Avatar</a>
+  <div class="toc-links">
+    <a href="#overview">方法</a>
+    <a href="#cdrm">服装修复</a>
+    <a href="#turntable">三维视图</a>
+    <a href="#pamg">运动门控</a>
+    <a href="#scenes">多场景</a>
+    <a href="#cite">引用</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <p class="venue-tag">计算机辅助设计与图形学学报 · 审稿中</p>
+  <h1>基于结构解耦的三维高斯数字人动画生成</h1>
+  <p class="subtitle">3D Gaussian Splatting Digital Human Animation Generation Based on Structural Decoupling</p>
+
+  <p class="authors">
+    <span>王雪平<sup>1</sup></span><span>廖偲宇<sup>1</sup></span><span>黄迪<sup>2,*</sup></span><span>闫飞虎<sup>1</sup></span><span>赵光哲<sup>1</sup></span>
+  </p>
+  <p class="affiliations">
+    <span><sup>1</sup>北京建筑大学智能科学与技术学院</span>
+    <span><sup>2</sup>北京航空航天大学计算机学院</span>
+    <span><sup>*</sup>通信作者</span>
+  </p>
+
+  <div class="links">
+    <span class="btn disabled" title="论文正式发表后开放"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z M14 2v6h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>论文（即将发布）</span>
+    <span class="btn disabled" title="代码整理中"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>代码（即将发布）</span>
+    <a class="btn ghost" href="#cite"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h4v4H7zM7 11c0 3-1 5-3 6M15 7h4v4h-4zM15 11c0 3-1 5-3 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>BibTeX</a>
+  </div>
+
+  <!-- Interactive teaser: one prompt drives three different identities at once -->
+  <section class="stage-wrap" aria-label="文本驱动演示">
+    <div class="prompt" role="group" aria-label="选择动作文本">
+      <span class="prompt-label">动作文本</span>
+      <div class="prompt-box"><span class="prompt-text" id="prompt-text">A person kicks with the left leg</span><span class="caret" aria-hidden="true"></span></div>
+      <div class="chips" id="motion-chips">
+        <button class="chip active" data-motion="kick" data-prompt="A person kicks with the left leg">踢腿</button>
+        <button class="chip" data-motion="run_wave" data-prompt="A person runs and waves hands">边跑边挥手</button>
+        <button class="chip" data-motion="walk" data-prompt="A person walks forward">行走</button>
       </div>
     </div>
-  </nav>
-
-  <header class="paper-header">
-    <p class="paper-status">Research Project Page &nbsp;·&nbsp; Manuscript under review</p>
-    <h1>基于结构解耦的三维高斯数字人动画生成</h1>
-    <p class="english-title">3D Gaussian Splatting Digital Human Animation Generation<br>Based on Structural Decoupling</p>
-    <p class="authors">
-      <span class="author">王雪平<sup>1</sup></span>
-      <span class="author">廖偲宇<sup>1</sup></span>
-      <span class="author">黄迪<sup>2,*</sup></span>
-      <span class="author">闫飞虎<sup>1</sup></span>
-      <span class="author">赵光哲<sup>1</sup></span>
-    </p>
-    <p class="affiliations">
-      <sup>1</sup> 北京建筑大学智能科学与技术学院 &nbsp;&nbsp;&nbsp;
-      <sup>2</sup> 北京航空航天大学计算机学院<br>
-      <sup>*</sup> 通信作者
-    </p>
-    <p class="journal-line">《计算机辅助设计与图形学学报》（审稿中）</p>
-
-    <div class="resource-links" aria-label="论文资源">
-      <span class="resource disabled" title="论文正式公开后提供链接"><span class="resource-icon" aria-hidden="true">▤</span> Paper <small>（待公开）</small></span>
-      <span class="resource disabled" title="代码整理后提供链接"><span class="resource-icon" aria-hidden="true">&lt;/&gt;</span> Code <small>（整理中）</small></span>
-      <a href="#results" class="resource"><span class="resource-icon" aria-hidden="true">▶</span> Video Results</a>
-    </div>
-    <p class="header-hint">论文与代码链接将在公开后更新</p>
-  </header>
-
-  <main class="main-content container">
-    <figure class="teaser" aria-labelledby="teaser-caption">
-      <div class="teaser-frame">
-        <img src="static/images/fig01_task.jpg" alt="任务示意：单张半身照和文本动作输入，输出三维高斯数字人动画" fetchpriority="high">
-      </div>
-      <figcaption id="teaser-caption" class="figure-caption center"><strong>Figure 1.</strong> 输入单张半身照片与动作文本，生成可在不同三维场景中驱动的三维高斯数字人动画。</figcaption>
-    </figure>
-
-    <section class="paper-section" id="abstract" aria-labelledby="abstract-heading">
-      <h2 id="abstract-heading">Abstract</h2>
-      <p class="abstract-text">现有三维高斯数字人生成方法对输入质量要求苛刻，动态运动中容易因局部信息缺失导致衣物几何不连续，可控性与时序一致性也不足。针对这些问题，本文提出一种仅以单张半身照为输入、融合生成式补全与衣物结构解耦的数字人动画生成框架。首先，设计生成式补全与主体提取相结合的预处理模块，提升单图重建的完整性与身份一致性；继而，构建面向服装区域的结构解耦重建模块（CDRM），通过目标包络估计、高斯克隆与属性迁移实现复杂衣物的连续补全；再引入历史感知运动门控模块（PAMG），自适应抑制动作序列中的局部抖动、时序间断与幅值异常；最后，将优化后的动作序列作用于修复后的三维高斯表示，实现可部署于多种三维场景的文本可控数字人动画。</p>
-      <p class="paper-keywords"><strong>关键词：</strong>三维高斯泼溅；数字人重建；结构解耦；文本驱动动画；运动门控</p>
-    </section>
-
-    <section class="paper-section" id="method" aria-labelledby="method-heading">
-      <h2 id="method-heading">Method</h2>
-      <p class="section-subtitle">本文方法由生成式人体补全、衣物结构解耦重建和历史感知动作优化组成。</p>
-      <figure class="method-figure">
-        <img src="static/images/fig02_framework.jpg" loading="lazy" alt="方法框架图：单图预处理、三维高斯重建、CDRM 衣物结构解耦以及 HY-Motion 和 PAMG 运动优化">
-        <figcaption class="figure-caption center"><strong>Figure 2.</strong> 方法整体框架：生成式补全与 LHM 重建、衣物结构解耦重建模块（CDRM）以及历史感知运动门控模块（PAMG）。</figcaption>
+    <div class="stage" id="hero-stage">
+      <figure class="actor">
+        <video muted loop playsinline preload="auto" data-avatar="hei_qun"></video>
+        <figcaption>真人半身照</figcaption>
       </figure>
-      <div class="method-details">
-        <div class="method-detail">
-          <strong>生成式补全与重建</strong>
-          <p>由单张半身照补全缺失区域，经主体提取与 LHM 重建获取可动画的三维高斯表示。</p>
-        </div>
-        <div class="method-detail">
-          <strong>衣物结构解耦（CDRM）</strong>
-          <p>通过目标包络估计、高斯克隆与属性迁移，缓解复杂服装区域的几何不连续。</p>
-        </div>
-        <div class="method-detail">
-          <strong>运动时序优化（PAMG）</strong>
-          <p>对 HY-Motion 生成的动作序列进行历史感知优化，改善抖动、时序间断与幅值异常。</p>
+      <figure class="actor">
+        <video muted loop playsinline preload="auto" data-avatar="lihua"></video>
+        <figcaption>游戏角色</figcaption>
+      </figure>
+      <figure class="actor">
+        <video muted loop playsinline preload="auto" data-avatar="doubao"></video>
+        <figcaption>卡通形象</figcaption>
+      </figure>
+    </div>
+    <p class="stage-note">同一段文本生成的动作同时驱动三个由单张图像重建的三维高斯数字人（三维高斯渲染；地面网格与阴影为可视化辅助）。</p>
+  </section>
+</header>
+
+<main id="main">
+
+  <section class="band">
+    <div class="wrap">
+      <figure class="figure">
+        <img src="static/images/fig01_task.jpg" alt="任务示意图：单张半身照与文本输入，输出可在多场景中驱动的三维高斯数字人" loading="lazy">
+        <figcaption><b>图 1</b>&ensp;输入单张半身照和一段动作文本，生成可部署到多种三维场景的三维高斯数字人动画。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="wrap narrow" id="abstract">
+    <h2 class="section-title"><span class="kicker">Abstract</span>摘要</h2>
+    <p class="abstract">
+      现有三维高斯数字人生成方法对输入质量要求苛刻，动态运动中容易因局部信息缺失导致衣物几何不连续，可控性与时序一致性也不足。针对这些问题，本文提出一种仅以单张半身照为输入、融合生成式补全与衣物结构解耦的数字人动画生成框架。首先，设计生成式补全与主体提取相结合的预处理模块，提升单图重建的完整性与身份一致性；继而，构建面向服装区域的结构解耦重建模块（CDRM），通过目标包络估计、高斯克隆与属性迁移实现复杂衣物的连续补全；再引入历史感知运动门控模块（PAMG），自适应抑制动作序列中的局部抖动、时序间断与幅值异常；最后，将优化后的动作序列作用于修复后的三维高斯表示，实现可部署于多种三维场景的文本可控数字人动画。
+    </p>
+  </section>
+
+  <section class="wrap" id="overview">
+    <h2 class="section-title"><span class="kicker">Method</span>方法概览</h2>
+    <div class="modules">
+      <a class="module" href="#overview-fig">
+        <span class="module-no">01</span>
+        <h3>生成式补全</h3>
+        <p>补全半身照缺失的下半身并提取主体，保留原图中的人脸与服装外观，供单图三维高斯重建使用。</p>
+      </a>
+      <a class="module" href="#cdrm">
+        <span class="module-no">02</span>
+        <h3>衣物结构解耦重建 CDRM</h3>
+        <p>估计裙装目标包络，克隆高斯并迁移属性，补全腿间缺失的衣物，使裙摆在大幅动作中保持连续。</p>
+      </a>
+      <a class="module" href="#pamg">
+        <span class="module-no">03</span>
+        <h3>历史感知运动门控 PAMG</h3>
+        <p>根据历史运动状态自适应门控文本生成的动作序列，抑制局部抖动、时序间断与幅值异常。</p>
+      </a>
+    </div>
+    <figure class="figure" id="overview-fig">
+      <img src="static/images/fig02_framework.jpg" alt="整体框架图" loading="lazy">
+      <figcaption><b>图 2</b>&ensp;整体框架：生成式补全 → LHM 规范空间三维高斯重建 → 衣物结构解耦重建（CDRM）；文本 → HY-Motion → 历史感知运动门控（PAMG）→ 驱动与多场景渲染。</figcaption>
+    </figure>
+  </section>
+
+  <section class="band" id="cdrm">
+    <div class="wrap">
+      <h2 class="section-title"><span class="kicker">Clothing</span>衣物结构解耦重建</h2>
+      <p class="lead">单图重建的长裙在双腿之间缺失高斯，展开到模板姿态后裙摆从中间裂开，驱动时裂缝随腿部运动暴露。CDRM 依据目标包络克隆并迁移高斯，补全缺失的衣物。拖动滑块对比规范空间中的同一个数字人。</p>
+      <div class="compare still" id="cdrm-compare" style="--pos:50%">
+        <img class="under" src="static/images/cdrm_canonical_lhm.jpg" alt="LHM 重建的规范空间数字人，长裙在双腿之间裂开" draggable="false">
+        <img class="over" src="static/images/cdrm_canonical_cdrm.jpg" alt="加入 CDRM 后的规范空间数字人，长裙连续完整" draggable="false">
+        <span class="tag left">LHM（无服装修复）</span>
+        <span class="tag right">＋CDRM（本文）</span>
+        <div class="handle" role="slider" tabindex="0" aria-label="对比滑块" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+          <span class="grip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
       </div>
-    </section>
+      <p class="hint">左侧为 LHM 直接重建，右侧加入 CDRM（规范空间模板姿态渲染）；可按 ← → 键移动滑块。</p>
+    </div>
+  </section>
 
-    <section class="paper-section" id="results" aria-labelledby="results-heading">
-      <h2 id="results-heading">Qualitative Results</h2>
-      <p class="section-subtitle">展示不同人物风格、服装形态及三维场景中的动画渲染结果。所有视频均可手动播放、暂停与全屏查看。</p>
+  <section class="wrap" id="turntable">
+    <h2 class="section-title"><span class="kicker">3D</span>任意视角</h2>
+    <p class="lead">重建结果是完整的三维高斯表示，不只是正面图像。在人物上左右拖动即可旋转查看。</p>
+    <div class="turntables">
+      <figure class="spin" data-sprite="orbit_hei_qun_sprite.jpg" data-frames="48" data-cols="8" tabindex="0" aria-label="真人数字人 360 度视图，左右拖动或按方向键旋转">
+        <div class="spin-view"></div><figcaption>真人半身照</figcaption>
+      </figure>
+      <figure class="spin" data-sprite="orbit_lihua_sprite.jpg" data-frames="48" data-cols="8" tabindex="0" aria-label="游戏角色 360 度视图，左右拖动或按方向键旋转">
+        <div class="spin-view"></div><figcaption>游戏角色</figcaption>
+      </figure>
+      <figure class="spin" data-sprite="orbit_doubao_sprite.jpg" data-frames="48" data-cols="8" tabindex="0" aria-label="卡通形象 360 度视图，左右拖动或按方向键旋转">
+        <div class="spin-view"></div><figcaption>卡通形象</figcaption>
+      </figure>
+    </div>
+    <p class="hint"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>拖动旋转 · 松开后继续自动旋转</p>
+  </section>
 
-      <div class="result-group">
-        <h3 class="result-group-title">Multi-scene Animation</h3>
-        <div class="result-grid">
-          <figure class="result-figure">
-            <div class="video-frame">
-              <video src="static/videos/demo_street.mp4" poster="static/videos/demo_street.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="游戏角色在街道场景中的文本驱动动画"></video>
-            </div>
-            <figcaption><strong>(a) 街道场景 · 游戏角色</strong>重建游戏角色在街道场景中的文本驱动动画。</figcaption>
-          </figure>
-          <figure class="result-figure">
-            <div class="video-frame">
-              <video src="static/videos/demo_track.mp4" poster="static/videos/demo_track.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="真人半身照重建的数字人在三维高斯体育场奔跑"></video>
-            </div>
-            <figcaption><strong>(b) 体育场景 · 真人数字人</strong>真人半身照重建的数字人在三维高斯体育场场景中奔跑。</figcaption>
-          </figure>
+  <section class="band" id="pamg">
+    <div class="wrap">
+      <h2 class="section-title"><span class="kicker">Motion</span>历史感知运动门控</h2>
+      <p class="lead">文本生成的动作常带有脚底打滑与局部抖动。下方两段视频驱动同一个男性数字人（与图 1 为同一人物），相机距离与角度相同并各自跟随人物；地面网格固定在世界坐标中，可据此观察支撑脚是否相对地面滑动。</p>
+      <div class="tabs" role="tablist" aria-label="选择动作" id="pamg-tabs">
+        <button role="tab" class="tab active" aria-selected="true" data-clip="pamg_run">跑步</button>
+        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_walk">行走</button>
+        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_runwave">边跑边挥手</button>
+        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_kickrunjump">踢腿跑跳</button>
+      </div>
+      <div class="duo" id="pamg-duo">
+        <figure><video muted loop playsinline preload="auto" data-variant="base"></video><figcaption>HY-Motion 内置平滑</figcaption></figure>
+        <figure><video muted loop playsinline preload="auto" data-variant="gated"></video><figcaption class="ours">HY-Motion ＋ PAMG（本文）</figcaption></figure>
+      </div>
+      <div class="player" id="pamg-player">
+        <button class="pbtn" id="pamg-play" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
+        <input type="range" id="pamg-seek" min="0" max="1000" value="0" aria-label="时间轴">
+        <div class="speeds" role="group" aria-label="播放速度">
+          <button class="speed" data-rate="0.25">0.25×</button>
+          <button class="speed" data-rate="0.5">0.5×</button>
+          <button class="speed active" data-rate="1">1×</button>
         </div>
       </div>
+      <p class="hint">两段视频共用一个时间轴；慢放或逐段拖动可以更清楚地看到足部与地面的接触。</p>
+    </div>
+  </section>
 
-      <div class="result-group">
-        <h3 class="result-group-title">Character and Garment Animation</h3>
-        <div class="result-grid">
-          <figure class="result-figure">
-            <div class="video-frame">
-              <video src="static/videos/demo_anime.mp4" poster="static/videos/demo_anime.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="动漫卡通风格人物的动画演示"></video>
-            </div>
-            <figcaption><strong>(c) 动漫卡通风格人物</strong>动漫卡通风格人物在三维场景中的动画演示。</figcaption>
-          </figure>
-          <figure class="result-figure">
-            <div class="video-frame">
-              <video src="static/videos/demo_skirt.mp4" poster="static/videos/demo_skirt.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="真实渲染裙摆人物的动画演示"></video>
-            </div>
-            <figcaption><strong>(d) 写实渲染裙摆人物</strong>真实渲染裙摆人物在室内场景中的动画演示。</figcaption>
-          </figure>
-        </div>
-      </div>
-      <p class="result-note">视频采用等宽比例排版，并使用 contain 显示以避免人物和裙摆被裁切。</p>
-    </section>
+  <section class="wrap" id="scenes">
+    <h2 class="section-title"><span class="kicker">Deployment</span>多场景演示</h2>
+    <div class="grid-2">
+      <figure class="figure">
+        <video src="static/videos/demo_street.mp4" poster="static/videos/demo_street.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
+        <figcaption>游戏角色资产在街道场景中的文本驱动动画。</figcaption>
+      </figure>
+      <figure class="figure">
+        <video src="static/videos/demo_track.mp4" poster="static/videos/demo_track.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
+        <figcaption>真人半身照重建的数字人在三维高斯体育场场景中奔跑。</figcaption>
+      </figure>
+    </div>
+  </section>
 
-    <section class="paper-section" id="bibtex" aria-labelledby="citation-heading">
-      <h2 id="citation-heading">BibTeX</h2>
-      <p class="section-subtitle">稿件仍在审稿中；正式引用信息以论文最终发表版本为准。</p>
-      <div class="citation-box">
-        <div class="citation-header">
-          <span>引用信息</span>
-          <button class="copy-button" type="button" id="copy-citation" aria-label="复制 BibTeX 引用">复制 BibTeX</button>
-        </div>
-        <pre id="bibtex-code" class="bibtex">@article{wang2026sdgs,
+  <section class="wrap narrow" id="cite">
+    <h2 class="section-title"><span class="kicker">Citation</span>引用</h2>
+    <div class="bib">
+      <button class="copy" id="copy-bib" aria-label="复制 BibTeX">复制</button>
+<pre id="bibtex">@article{wang2026sdgs,
   title   = {基于结构解耦的三维高斯数字人动画生成},
   author  = {王雪平 and 廖偲宇 and 黄迪 and 闫飞虎 and 赵光哲},
   journal = {计算机辅助设计与图形学学报},
   year    = {2026},
   note    = {审稿中}
 }</pre>
-        <p id="copy-feedback" class="copy-feedback" aria-live="polite"></p>
-      </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <footer class="page-footer">
-    <p>本工作得到国家自然科学基金（62402026）和北京市教育委员会科研计划项目（KM202410016010）资助。</p>
-    <p>© 2026 · 北京建筑大学智能科学与技术学院 · SDGS Avatar Research Project</p>
-  </footer>
+</main>
 
-  <script>
-    (function () {
-      var button = document.getElementById('copy-citation');
-      var content = document.getElementById('bibtex-code');
-      var feedback = document.getElementById('copy-feedback');
-      if (!button || !content || !feedback) return;
-      button.addEventListener('click', function () {
-        if (!navigator.clipboard || !navigator.clipboard.writeText) {
-          feedback.textContent = '请选中上方 BibTeX 内容手动复制。';
-          return;
-        }
-        navigator.clipboard.writeText(content.textContent).then(function () {
-          button.textContent = '已复制 ✓';
-          feedback.textContent = 'BibTeX 已复制到剪贴板。';
-          window.setTimeout(function () {
-            button.textContent = '复制 BibTeX';
-            feedback.textContent = '';
-          }, 2400);
-        }).catch(function () {
-          feedback.textContent = '自动复制失败，请手动复制。';
-        });
-      });
-    }());
-  </script>
+<footer>
+  <p>本工作得到国家自然科学基金（62402026）和北京市教育委员会科研计划项目（KM202410016010）资助。</p>
+  <p class="muted">页面中的数字人视频均由导出的三维高斯模型直接渲染生成，未经后期修饰。</p>
+</footer>
+
+<script src="static/js/main.js" defer></script>
 </body>
 </html>
