@@ -279,3 +279,10 @@ footer p { margin: 4px 0; }
 .scene figcaption span { color: var(--ink-2); }
 .keywords { color: var(--ink-2); font-size: .95rem; margin: 14px 0 0; }
 @media (max-width: 720px) { .scenes { grid-template-columns: 1fr; } }
+.pamg-prompt { text-align: center; color: var(--ink-3); font-size: .88rem; margin: -6px auto 16px; max-width: 800px; }
+.pamg-prompt code { font-family: var(--mono); color: var(--ink-2); background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; }
+.legend { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 6px 10px; color: var(--ink-2); font-size: .86rem; margin: 14px auto 0; max-width: 800px; }
+.legend .sw { display: inline-block; width: 22px; height: 8px; border-radius: 4px; margin-left: 8px; }
+.legend .sw.slide { background: #d6362a; }
+.legend .sw.plant { background: #b4b1aa; }
+.pamg-prompt code { display: inline; white-space: normal; line-height: 1.9; box-decoration-break: clone; -webkit-box-decoration-break: clone; }

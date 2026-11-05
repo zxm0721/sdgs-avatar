@@ -166,7 +166,8 @@
     $$('.speed').forEach(b => b.addEventListener('click', () => {
       $$('.speed').forEach(x => x.classList.toggle('active', x === b)); sync.setRate(+b.dataset.rate);
     }));
-    tabs($('#pamg-tabs'), show);
+    const promptEl = $('#pamg-prompt');
+    tabs($('#pamg-tabs'), clip => { show(clip); promptEl.textContent = $(`#pamg-tabs [data-clip="${clip}"]`).dataset.prompt; });
     show($('#pamg-tabs .tab.active').dataset.clip);
     watch(duo, b => sync.setVisible(b));
     ui();

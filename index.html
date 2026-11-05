@@ -159,11 +159,12 @@
       <h2 class="section-title"><span class="kicker">Motion</span>历史感知运动门控</h2>
       <p class="lead">文本生成的动作常带有脚底打滑与局部抖动。下方两段视频驱动同一个男性数字人（与图 1 为同一人物），相机距离与角度相同并各自跟随人物；地面网格固定在世界坐标中，可据此观察支撑脚是否相对地面滑动。</p>
       <div class="tabs" role="tablist" aria-label="选择动作" id="pamg-tabs">
-        <button role="tab" class="tab active" aria-selected="true" data-clip="pamg_run">跑步</button>
-        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_walk">行走</button>
-        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_runwave">边跑边挥手</button>
-        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_kickrunjump">踢腿跑跳</button>
+        <button role="tab" class="tab active" aria-selected="true" data-clip="pamg_runturn" data-prompt="a half blue &amp; red  body stands in the center as he then runs left,  turns then runs right . he runs left once more &amp; stops bavk where he started in the middle.">左右折返跑</button>
+        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_curvewalk" data-prompt="a man walks in a curve, then a straight line, then doubles back.">曲线行走并折返</button>
+        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_quickwalk" data-prompt="the person is doing a casual quick walk.">快步走</button>
+        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_walk" data-prompt="the person is walking forward.">向前行走</button>
       </div>
+      <p class="pamg-prompt">动作文本（HumanML3D 测试集原文）：<code id="pamg-prompt">a half blue &amp; red  body stands in the center as he then runs left,  turns then runs right . he runs left once more &amp; stops bavk where he started in the middle.</code></p>
       <div class="duo" id="pamg-duo">
         <figure><video muted loop playsinline preload="auto" data-variant="base"></video><figcaption>HY-Motion 内置平滑</figcaption></figure>
         <figure><video muted loop playsinline preload="auto" data-variant="gated"></video><figcaption class="ours">HY-Motion ＋ PAMG（本文）</figcaption></figure>
@@ -177,7 +178,9 @@
           <button class="speed active" data-rate="1">1×</button>
         </div>
       </div>
-      <p class="hint">两段视频共用一个时间轴；慢放或逐段拖动可以更清楚地看到足部与地面的接触。</p>
+      <p class="legend"><span class="sw slide"></span>地面滑动：脚底贴地（4 cm 内）却仍在水平移动（超过 2.5 cm/帧，20 fps，与滑步率判据相同）<span class="sw plant"></span>稳定支撑</p>
+      <p class="hint">两段视频共用一个时间轴；足迹由渲染出的贴地高斯点逐帧计算，慢放可以更清楚地看到滑动过程。</p>
+      <p class="hint">示例取自 HumanML3D 测试集文本：先按逐条统计选出 PAMG 减少脚底滑动最多的 60 条，再在该数字人上逐条渲染复核后选取差异最明显的动作，用于定性展示，不代表平均效果；定量结果见论文。</p>
     </div>
   </section>
 
