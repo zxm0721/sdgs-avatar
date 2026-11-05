@@ -43,7 +43,7 @@
 
   <div class="links">
     <span class="btn disabled" title="论文正式发表后开放"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z M14 2v6h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>论文（即将发布）</span>
-    <span class="btn disabled" title="代码整理中"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>代码（即将发布）</span>
+    <a class="btn" href="https://github.com/zxm0721/sdgs-avatar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>代码</a>
     <a class="btn ghost" href="#cite"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h4v4H7zM7 11c0 3-1 5-3 6M15 7h4v4h-4zM15 11c0 3-1 5-3 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>BibTeX</a>
   </div>
 
@@ -72,7 +72,7 @@
         <figcaption>卡通形象</figcaption>
       </figure>
     </div>
-    <p class="stage-note">同一段文本生成的动作同时驱动三个由单张图像重建的三维高斯数字人（三维高斯渲染；地面网格与阴影为可视化辅助）。</p>
+    <p class="stage-note">同一段文本生成的动作同时驱动三个由单张图像重建的三维高斯数字人（正面视角，三维高斯渲染；脚下阴影为可视化辅助）。</p>
   </section>
 </header>
 
@@ -157,7 +157,7 @@
   <section class="band" id="pamg">
     <div class="wrap">
       <h2 class="section-title"><span class="kicker">Motion</span>历史感知运动门控</h2>
-      <p class="lead">文本生成的动作常带有脚底打滑与局部抖动，PAMG 根据历史运动状态对动作序列进行门控优化。下方同一段经 PAMG 优化的动作同时驱动三个裙装动漫角色，三段视频共用一个时间轴；地面网格固定在世界坐标中，可观察支撑脚与地面的接触。</p>
+      <p class="lead">文本生成的动作常带有脚底打滑与局部抖动，PAMG 根据历史运动状态对动作序列进行门控优化。下方同一段经 PAMG 优化的动作同时驱动三个角色（正面视角），三段视频共用一个时间轴。</p>
       <div class="tabs" role="tablist" aria-label="选择动作" id="pamg-tabs">
         <button role="tab" class="tab active" aria-selected="true" data-clip="pamg_quickwalk" data-prompt="the person is doing a casual quick walk.">快步走</button>
         <button role="tab" class="tab" aria-selected="false" data-clip="pamg_walk" data-prompt="the person is walking forward.">向前行走</button>
@@ -165,8 +165,8 @@
       <p class="pamg-prompt">动作文本（HumanML3D 测试集原文）：<code id="pamg-prompt">the person is doing a casual quick walk.</code></p>
       <div class="duo trio" id="pamg-duo">
         <figure><video muted loop playsinline preload="auto" data-variant="skirt24"></video><figcaption>阿尔托莉雅</figcaption></figure>
-        <figure><video muted loop playsinline preload="auto" data-variant="skirt39"></video><figcaption>爱丽丝</figcaption></figure>
-        <figure><video muted loop playsinline preload="auto" data-variant="skirt29"></video><figcaption>蒂法</figcaption></figure>
+        <figure><video muted loop playsinline preload="auto" data-variant="skirt30"></video><figcaption>爱丽丝</figcaption></figure>
+        <figure><video muted loop playsinline preload="auto" data-variant="skirt36"></video><figcaption>时崎狂三</figcaption></figure>
       </div>
       <div class="player" id="pamg-player">
         <button class="pbtn" id="pamg-play" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
@@ -177,7 +177,7 @@
           <button class="speed active" data-rate="1">1×</button>
         </div>
       </div>
-      <p class="hint">动作由 HY-Motion 根据 HumanML3D 测试集文本生成，经 PAMG 优化后驱动。人物取自裙摆测试集中的 AI 绘制角色图（非官方原画），三维资产为人工修复版本。</p>
+      <p class="hint">动作由 HY-Motion 根据 HumanML3D 测试集文本生成，经 PAMG 优化后驱动。三个人物取自裙摆测试集中的 AI 绘制角色图（非官方原画），三维资产为人工修复版本。</p>
     </div>
   </section>
 
