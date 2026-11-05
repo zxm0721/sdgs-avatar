@@ -286,3 +286,9 @@ footer p { margin: 4px 0; }
 .legend .sw.slide { background: #d6362a; }
 .legend .sw.plant { background: #b4b1aa; }
 .pamg-prompt code { display: inline; white-space: normal; line-height: 1.9; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.duo.trio { grid-template-columns: repeat(3, 1fr); max-width: 1040px; gap: 14px; }
+.duo.trio figcaption { color: var(--ink-2); font-weight: 600; }
+.duo.trio + .player { max-width: 1040px; }
+@media (max-width: 720px) { .duo.trio { grid-template-columns: repeat(3, 1fr); gap: 6px; } .duo.trio figcaption { font-size: .78rem; } }
+.duo.trio video { aspect-ratio: 2 / 3; object-position: 50% 50%; }
+.duo.trio { max-width: 900px; }
