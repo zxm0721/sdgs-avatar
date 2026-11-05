@@ -22,7 +22,7 @@
     <a href="#cdrm">服装修复</a>
     <a href="#turntable">三维视图</a>
     <a href="#pamg">运动门控</a>
-    <a href="#scenes">多场景</a>
+    <a href="#scenes">视频结果</a>
     <a href="#cite">引用</a>
   </div>
 </nav>
@@ -51,10 +51,10 @@
   <section class="stage-wrap" aria-label="文本驱动演示">
     <div class="prompt" role="group" aria-label="选择动作文本">
       <span class="prompt-label">动作文本</span>
-      <div class="prompt-box"><span class="prompt-text" id="prompt-text">A person kicks with the left leg</span><span class="caret" aria-hidden="true"></span></div>
+      <div class="prompt-box"><span class="prompt-text" id="prompt-text">kick</span><span class="caret" aria-hidden="true"></span></div>
       <div class="chips" id="motion-chips">
-        <button class="chip active" data-motion="kick" data-prompt="A person kicks with the left leg">踢腿</button>
-        <button class="chip" data-motion="run_wave" data-prompt="A person runs and waves hands">边跑边挥手</button>
+        <button class="chip active" data-motion="kick" data-prompt="kick">踢腿</button>
+        <button class="chip" data-motion="run_wave" data-prompt="a person run and wave hands">边跑边挥手</button>
         <button class="chip" data-motion="walk" data-prompt="A person walks forward">行走</button>
       </div>
     </div>
@@ -92,6 +92,7 @@
     <p class="abstract">
       现有三维高斯数字人生成方法对输入质量要求苛刻，动态运动中容易因局部信息缺失导致衣物几何不连续，可控性与时序一致性也不足。针对这些问题，本文提出一种仅以单张半身照为输入、融合生成式补全与衣物结构解耦的数字人动画生成框架。首先，设计生成式补全与主体提取相结合的预处理模块，提升单图重建的完整性与身份一致性；继而，构建面向服装区域的结构解耦重建模块（CDRM），通过目标包络估计、高斯克隆与属性迁移实现复杂衣物的连续补全；再引入历史感知运动门控模块（PAMG），自适应抑制动作序列中的局部抖动、时序间断与幅值异常；最后，将优化后的动作序列作用于修复后的三维高斯表示，实现可部署于多种三维场景的文本可控数字人动画。
     </p>
+    <p class="keywords"><b>关键词：</b>三维高斯泼溅；数字人重建；结构解耦；文本驱动动画；运动门控</p>
   </section>
 
   <section class="wrap" id="overview">
@@ -181,15 +182,28 @@
   </section>
 
   <section class="wrap" id="scenes">
-    <h2 class="section-title"><span class="kicker">Deployment</span>多场景演示</h2>
-    <div class="grid-2">
-      <figure class="figure">
-        <video src="static/videos/demo_street.mp4" poster="static/videos/demo_street.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
-        <figcaption>游戏角色资产在街道场景中的文本驱动动画。</figcaption>
+    <h2 class="section-title"><span class="kicker">Qualitative Results</span>多场景与多风格演示</h2>
+    <p class="lead">同一流程重建的数字人放入不同三维场景并由文本驱动，覆盖游戏角色、真人半身照、动漫卡通形象与裙装人物。视频可暂停与全屏查看。</p>
+    <h3 class="group-title">Multi-scene Animation</h3>
+    <div class="scenes">
+      <figure class="scene">
+        <div class="scene-frame"><video src="static/videos/demo_street.mp4" poster="static/videos/demo_street.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="游戏角色在街道场景中的文本驱动动画"></video></div>
+        <figcaption><b>(a) 街道场景 · 游戏角色</b><span>重建游戏角色在街道场景中的文本驱动动画。</span></figcaption>
       </figure>
-      <figure class="figure">
-        <video src="static/videos/demo_track.mp4" poster="static/videos/demo_track.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
-        <figcaption>真人半身照重建的数字人在三维高斯体育场场景中奔跑。</figcaption>
+      <figure class="scene">
+        <div class="scene-frame"><video src="static/videos/demo_track.mp4" poster="static/videos/demo_track.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="真人半身照重建的数字人在三维高斯体育场奔跑"></video></div>
+        <figcaption><b>(b) 体育场景 · 真人数字人</b><span>真人半身照重建的数字人在三维高斯体育场场景中奔跑。</span></figcaption>
+      </figure>
+    </div>
+    <h3 class="group-title">Character and Garment Animation</h3>
+    <div class="scenes">
+      <figure class="scene">
+        <div class="scene-frame"><video src="static/videos/demo_anime.mp4" poster="static/videos/demo_anime.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="动漫卡通风格人物的动画演示"></video></div>
+        <figcaption><b>(c) 动漫卡通风格人物</b><span>动漫卡通风格人物在三维场景中的动画演示。</span></figcaption>
+      </figure>
+      <figure class="scene">
+        <div class="scene-frame"><video src="static/videos/demo_skirt.mp4" poster="static/videos/demo_skirt.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="真实渲染裙摆人物的动画演示"></video></div>
+        <figcaption><b>(d) 写实渲染裙摆人物</b><span>真实渲染裙摆人物在室内场景中的动画演示。</span></figcaption>
       </figure>
     </div>
   </section>
