@@ -27,7 +27,7 @@
         const done = () => { el.removeEventListener('loadeddata', done); res(); };
         el.addEventListener('loadeddata', done);
         el.poster = srcs[i].replace(/\.mp4$/, '.jpg');
-        el.src = srcs[i]; el.load();
+        el.src = srcs[i];
       }));
       return Promise.all(ready).then(() => {
         this.v.forEach(el => { el.currentTime = 0; el.playbackRate = this.rate; });

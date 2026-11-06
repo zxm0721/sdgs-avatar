@@ -72,20 +72,13 @@
         <figcaption>卡通形象</figcaption>
       </figure>
     </div>
-    <p class="stage-note">同一段文本生成的动作同时驱动三个由单张图像重建的三维高斯数字人（正面视角，三维高斯渲染；脚下阴影为可视化辅助）。</p>
+    <p class="stage-note">单张图像重建的三维高斯数字人，由同一段文本生成的动作驱动。</p>
   </section>
 </header>
 
 <main id="main">
 
-  <section class="band">
-    <div class="wrap">
-      <figure class="figure">
-        <img src="static/images/fig01_task.jpg" alt="任务示意图：单张半身照与文本输入，输出可在多场景中驱动的三维高斯数字人" loading="lazy">
-        <figcaption><b>图 1</b>&ensp;输入单张半身照和一段动作文本，生成可部署到多种三维场景的三维高斯数字人动画。</figcaption>
-      </figure>
-    </div>
-  </section>
+
 
   <section class="wrap narrow" id="abstract">
     <h2 class="section-title"><span class="kicker">Abstract</span>摘要</h2>
@@ -94,6 +87,15 @@
     </p>
     <p class="keywords"><b>关键词：</b>三维高斯泼溅；数字人重建；结构解耦；文本驱动动画；运动门控</p>
   </section>
+
+  <section class="wrap task-overview">
+
+<figure class="figure">
+<img alt="任务示意图：单张半身照与文本输入，输出可在多场景中驱动的三维高斯数字人" loading="lazy" src="static/images/fig01_task.jpg"/>
+<figcaption><b>图 1</b> 输入单张半身照和一段动作文本，生成可部署到多种三维场景的三维高斯数字人动画。</figcaption>
+</figure>
+
+</section>
 
   <section class="wrap" id="overview">
     <h2 class="section-title"><span class="kicker">Method</span>方法概览</h2>
@@ -121,21 +123,21 @@
   </section>
 
   <section class="band" id="cdrm">
-    <div class="wrap">
-      <h2 class="section-title"><span class="kicker">Clothing</span>衣物结构解耦重建</h2>
-      <p class="lead">单图重建的长裙在双腿之间缺失高斯，展开到模板姿态后裙摆从中间裂开，驱动时裂缝随腿部运动暴露。CDRM 依据目标包络克隆并迁移高斯，补全缺失的衣物。拖动滑块对比规范空间中的同一个数字人。</p>
-      <div class="compare still" id="cdrm-compare" style="--pos:50%">
-        <img class="under" src="static/images/cdrm_canonical_lhm.jpg" alt="LHM 重建的规范空间数字人，长裙在双腿之间裂开" draggable="false">
-        <img class="over" src="static/images/cdrm_canonical_cdrm.jpg" alt="加入 CDRM 后的规范空间数字人，长裙连续完整" draggable="false">
-        <span class="tag left">LHM（无服装修复）</span>
-        <span class="tag right">＋CDRM（本文）</span>
-        <div class="handle" role="slider" tabindex="0" aria-label="对比滑块" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
-          <span class="grip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </div>
-      </div>
-      <p class="hint">左侧为 LHM 直接重建，右侧加入 CDRM（规范空间模板姿态渲染）；可按 ← → 键移动滑块。</p>
-    </div>
-  </section>
+<div class="wrap comparison-layout"><div class="comparison-copy"><h2 class="section-title"><span class="kicker">Clothing</span>衣物结构解耦重建</h2><p class="lead">单图重建的长裙在双腿之间缺失高斯，展开到模板姿态后裙摆从中间裂开，驱动时裂缝随腿部运动暴露。CDRM 依据目标包络克隆并迁移高斯，补全缺失的衣物。拖动滑块对比规范空间中的同一个数字人。</p><p class="hint">左侧为 LHM 直接重建，右侧加入 CDRM（规范空间模板姿态渲染）；可按 ← → 键移动滑块。</p></div>
+
+
+<div class="compare still" id="cdrm-compare" style="--pos:50%">
+<img alt="LHM 重建的规范空间数字人，长裙在双腿之间裂开" class="under" draggable="false" src="static/images/cdrm_canonical_lhm.jpg"/>
+<img alt="加入 CDRM 后的规范空间数字人，长裙连续完整" class="over" draggable="false" src="static/images/cdrm_canonical_cdrm.jpg"/>
+<span class="tag left">LHM（无服装修复）</span>
+<span class="tag right">＋CDRM（本文）</span>
+<div aria-label="对比滑块" aria-valuemax="100" aria-valuemin="0" aria-valuenow="50" class="handle" role="slider" tabindex="0">
+<span aria-hidden="true" class="grip"><svg viewbox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></span>
+</div>
+</div>
+
+</div>
+</section>
 
   <section class="wrap" id="turntable">
     <h2 class="section-title"><span class="kicker">3D</span>任意视角</h2>
@@ -155,63 +157,45 @@
   </section>
 
   <section class="band" id="pamg">
-    <div class="wrap">
-      <h2 class="section-title"><span class="kicker">Motion</span>历史感知运动门控</h2>
-      <p class="lead">PAMG 根据历史运动状态对文本生成的动作进行门控优化。下方展示向前行走、后空翻与双人挥拳踢腿，均采用左侧 30° 视角；每行可独立暂停、拖动时间轴和慢放。</p>
-      <div class="motion-row" id="motion-walk">
-        <h3 class="group-title">向前行走</h3>
-        <p class="pamg-prompt">动作文本：<code>the person is walking forward.</code></p>
-        <div class="duo motion-duo">
-          <figure><video muted loop playsinline preload="metadata" data-src="pamg_walk_skirt30_left30.mp4" poster="static/videos/pamg_walk_skirt30_left30.jpg" aria-label="爱丽丝向前行走"></video><figcaption>爱丽丝</figcaption></figure>
-          <figure><video muted loop playsinline preload="metadata" data-src="pamg_walk_skirt36_left30.mp4" poster="static/videos/pamg_walk_skirt36_left30.jpg" aria-label="时崎狂三向前行走"></video><figcaption>时崎狂三</figcaption></figure>
-        </div>
-        <div class="player">
-          <button class="pbtn" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
-          <input type="range" class="motion-seek" min="0" max="1000" value="0" aria-label="向前行走时间轴">
-          <div class="speeds" role="group" aria-label="向前行走播放速度">
-            <button class="speed" data-rate="0.25">0.25×</button>
-            <button class="speed" data-rate="0.5">0.5×</button>
-            <button class="speed active" data-rate="1">1×</button>
-          </div>
-        </div>
-        <p class="hint">HY-Motion 根据 HumanML3D 文本生成动作，经 PAMG 优化后同步驱动两个角色。人物来自 AI 绘制图像，三维资产为人工修复版本。</p>
-      </div>
-      <div class="motion-row" id="motion-backflip">
-        <h3 class="group-title">后空翻</h3>
-        <figure class="motion-pair">
-          <video muted loop playsinline preload="metadata" data-src="action_row_backflip.mp4" poster="static/videos/action_row_backflip.jpg" aria-label="MXZ 与丛雨同步后空翻"></video>
-          <figcaption>MXZ · 丛雨</figcaption>
-        </figure>
-        <div class="player">
-          <button class="pbtn" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
-          <input type="range" class="motion-seek" min="0" max="1000" value="0" aria-label="后空翻时间轴">
-          <div class="speeds" role="group" aria-label="后空翻播放速度">
-            <button class="speed" data-rate="0.25">0.25×</button>
-            <button class="speed" data-rate="0.5">0.5×</button>
-            <button class="speed active" data-rate="1">1×</button>
-          </div>
-        </div>
-        <p class="hint">HY-Motion 文本驱动：起跳后空翻，双脚落地。两个角色共享同一段动作，在同一三维画面中渲染。</p>
-      </div>
-      <div class="motion-row" id="motion-fight">
-        <h3 class="group-title">挥拳踢腿 · 面对面</h3>
-        <figure class="motion-pair">
-          <video muted loop playsinline preload="metadata" data-src="action_row_fight.mp4" poster="static/videos/action_row_fight.jpg" aria-label="桐生一马与真岛吾朗面对面挥拳踢腿"></video>
-          <figcaption>桐生一马 · 真岛吾朗</figcaption>
-        </figure>
-        <div class="player">
-          <button class="pbtn" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
-          <input type="range" class="motion-seek" min="0" max="1000" value="0" aria-label="挥拳踢腿时间轴">
-          <div class="speeds" role="group" aria-label="挥拳踢腿播放速度">
-            <button class="speed" data-rate="0.25">0.25×</button>
-            <button class="speed" data-rate="0.5">0.5×</button>
-            <button class="speed active" data-rate="1">1×</button>
-          </div>
-        </div>
-        <p class="hint">HY-Motion 文本驱动：先连续出拳，再抬腿前踢。两个角色分别向内转 90°，在同一三维场景中面对面展示。</p>
-      </div>
-    </div>
-  </section>
+<div class="wrap">
+<h2 class="section-title"><span class="kicker">Motion</span>历史感知运动门控</h2>
+<p class="lead">从行走到大幅度动作，展示不同数字人的运动表现。左侧 30° 视角，支持独立播放、拖动与慢放。</p>
+<div class="motion-row" id="motion-walk"><div class="motion-copy"><span class="motion-meta">01 / WALK</span><h3 class="group-title">向前行走</h3><p class="motion-description">同一段行走动作，呈现相反朝向。动作由 HY-Motion 生成，并经 PAMG 优化。</p></div><div class="motion-media"><div class="duo motion-duo">
+<figure><video aria-label="左侧角色反向行走" data-src="pamg_walk_reverse.mp4" loop="" muted="" playsinline="" poster="static/videos/pamg_walk_reverse.jpg" preload="metadata"></video></figure>
+<figure><video aria-label="右侧角色向前行走" data-src="pamg_walk_skirt36_left30.mp4" loop="" muted="" playsinline="" poster="static/videos/pamg_walk_skirt36_left30.jpg" preload="metadata"></video></figure>
+</div><div class="player">
+<button aria-label="暂停" class="pbtn"><svg aria-hidden="true" viewbox="0 0 24 24"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-linecap="round" stroke-width="2.4"></path><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"></path></svg></button>
+<input aria-label="向前行走时间轴" class="motion-seek" max="1000" min="0" type="range" value="0"/>
+<div aria-label="向前行走播放速度" class="speeds" role="group">
+<button class="speed" data-rate="0.25">0.25×</button>
+<button class="speed" data-rate="0.5">0.5×</button>
+<button class="speed active" data-rate="1">1×</button>
+</div>
+</div></div></div>
+<div class="motion-row" id="motion-backflip"><div class="motion-copy"><span class="motion-meta">02 / BACKFLIP</span><h3 class="group-title">后空翻</h3><p class="motion-description">起跳、翻转、双脚落地。HY-Motion 文本生成动作，同步驱动两个角色。</p></div><div class="motion-media"><figure class="motion-pair">
+<video aria-label="两个角色同步后空翻" data-src="action_row_backflip.mp4" loop="" muted="" playsinline="" poster="static/videos/action_row_backflip.jpg" preload="metadata"></video>
+</figure><div class="player">
+<button aria-label="暂停" class="pbtn"><svg aria-hidden="true" viewbox="0 0 24 24"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-linecap="round" stroke-width="2.4"></path><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"></path></svg></button>
+<input aria-label="后空翻时间轴" class="motion-seek" max="1000" min="0" type="range" value="0"/>
+<div aria-label="后空翻播放速度" class="speeds" role="group">
+<button class="speed" data-rate="0.25">0.25×</button>
+<button class="speed" data-rate="0.5">0.5×</button>
+<button class="speed active" data-rate="1">1×</button>
+</div>
+</div></div></div>
+<div class="motion-row" id="motion-fight"><div class="motion-copy"><span class="motion-meta">03 / PUNCH &amp; KICK</span><h3 class="group-title">挥拳踢腿 · 面对面</h3><p class="motion-description">连续出拳后抬腿前踢。两人各转 90°，在同一三维场景中相向运动。</p></div><div class="motion-media"><figure class="motion-pair">
+<video aria-label="两个角色面对面挥拳踢腿" data-src="action_row_fight.mp4" loop="" muted="" playsinline="" poster="static/videos/action_row_fight.jpg" preload="metadata"></video>
+</figure><div class="player">
+<button aria-label="暂停" class="pbtn"><svg aria-hidden="true" viewbox="0 0 24 24"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-linecap="round" stroke-width="2.4"></path><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"></path></svg></button>
+<input aria-label="挥拳踢腿时间轴" class="motion-seek" max="1000" min="0" type="range" value="0"/>
+<div aria-label="挥拳踢腿播放速度" class="speeds" role="group">
+<button class="speed" data-rate="0.25">0.25×</button>
+<button class="speed" data-rate="0.5">0.5×</button>
+<button class="speed active" data-rate="1">1×</button>
+</div>
+</div></div></div>
+</div>
+</section>
 
   <section class="wrap" id="scenes">
     <h2 class="section-title"><span class="kicker">Qualitative Results</span>多场景与多风格演示</h2>
@@ -258,7 +242,7 @@
 
 <footer>
   <p>本工作得到国家自然科学基金（62402026）和北京市教育委员会科研计划项目（KM202410016010）资助。</p>
-  <p class="muted">页面中的数字人视频均由导出的三维高斯模型直接渲染生成，未经后期修饰。</p>
+  <p class="muted">数字人由三维高斯模型渲染；背景与接触阴影用于辅助展示。</p>
 </footer>
 
 <script src="static/js/main.js" defer></script>

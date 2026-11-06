@@ -286,30 +286,116 @@ footer p { margin: 4px 0; }
 .legend .sw.slide { background: #d6362a; }
 .legend .sw.plant { background: #b4b1aa; }
 .pamg-prompt code { display: inline; white-space: normal; line-height: 1.9; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.duo.trio { grid-template-columns: repeat(3, 1fr); max-width: 1040px; gap: 14px; }
-.duo.trio figcaption { color: var(--ink-2); font-weight: 600; }
-.duo.trio + .player { max-width: 1040px; }
-@media (max-width: 720px) { .duo.trio { grid-template-columns: repeat(3, 1fr); gap: 6px; } .duo.trio figcaption { font-size: .78rem; } }
-.duo.trio video { aspect-ratio: 2 / 3; object-position: 50% 50%; }
-.duo.trio { max-width: 900px; }
-.stage { max-width: 900px; background: linear-gradient(#f6f5f1, #e9e7e1); }
-.duo.trio video { background: #f4f3ef; }
-
-/* Three motion rows, with an independent timeline for each. */
-.motion-row { max-width: 900px; margin: 0 auto; }
-.motion-row + .motion-row { margin-top: 42px; }
-.motion-row .group-title { margin-top: 26px; }
-.motion-row .player { max-width: 900px; }
-.motion-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 720px; }
-.motion-duo video { aspect-ratio: 2 / 3; object-fit: contain; object-position: center; }
+/* Proportions inspired by graphics research project pages. */
+:root { --maxw: 1080px; --band: #f8f9fb; --line: #e6e8ec; --radius: 12px; }
+body { line-height: 1.75; }
+.hero { padding-top: 42px; max-width: 1040px; }
+.hero h1 { font-family: var(--sans); font-size: clamp(1.8rem, 3.3vw, 2.55rem); line-height: 1.4; letter-spacing: -.025em; max-width: 930px; margin-inline: auto; }
+.venue-tag { padding: 0; background: none; border: 0; border-radius: 0; margin-bottom: 16px; color: var(--accent); font-size: .82rem; }
+.subtitle { max-width: 740px; font-size: 1.05rem; margin-bottom: 20px; }
+.authors { font-size: 1.05rem; gap: 4px 20px; }
+.affiliations { font-size: .84rem; max-width: 900px; margin: 6px auto 20px; }
+.links { margin-bottom: 28px; gap: 8px; }
+.btn { padding: 7px 16px; font-size: .86rem; }
+.stage-wrap { margin: 0 auto; max-width: 820px; }
+.stage { max-width: 820px; border-radius: 12px; box-shadow: none; }
+.stage-note { max-width: 700px; font-size: .8rem; line-height: 1.65; }
+.prompt { gap: 8px 12px; margin-bottom: 12px; }
+.prompt-label { display: none; }
+.prompt-box { min-width: 260px; font-size: .84rem; padding: 5px 10px; box-shadow: none; }
+.chip { padding: 4px 12px; font-size: .82rem; }
+section { margin: 60px 0; }
+.band { padding: 48px 0; margin: 60px 0; border: 0; }
+.band:first-child { margin-top: 44px; }
+.wrap.narrow { max-width: 840px; }
+.section-title { font-family: var(--sans); font-size: clamp(1.35rem, 2.4vw, 1.7rem); letter-spacing: -.015em; margin-bottom: 14px; }
+.kicker { font-size: .68rem; letter-spacing: .16em; margin-bottom: 7px; }
+.lead { max-width: 730px; font-size: .94rem; line-height: 1.8; margin-bottom: 28px; }
+.abstract { font-size: .96rem; line-height: 1.95; }
+.keywords { font-size: .82rem; }
+.task-overview { max-width: 840px; margin-block: 32px 60px; }
+.figure img { border-radius: 8px; }
+figcaption { font-size: .8rem; line-height: 1.7; }
+.module { padding: 17px 18px; border-radius: 10px; }
+.module h3 { font-size: .97rem; }
+.module p { font-size: .84rem; }
+.modules { gap: 14px; margin-bottom: 24px; }
+.comparison-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; max-width: 960px; }
+.comparison-copy .section-title, .comparison-copy .lead, .comparison-copy .hint { text-align: left; }
+.comparison-copy .lead { margin-bottom: 18px; }
+.comparison-copy .hint { display: block; line-height: 1.8; font-size: .8rem; }
+.compare.still { width: min(100%, 350px); border-radius: 10px; box-shadow: none; }
+.turntables { max-width: 760px; margin: auto; gap: 16px; }
+.spin-view { border-radius: 10px; }
+.motion-row { display: grid; grid-template-columns: 185px minmax(0, 1fr); gap: 28px; max-width: 100%; margin: 0 auto; padding: 28px 0; border-top: 1px solid var(--line); align-items: start; }
+.motion-row + .motion-row { margin-top: 4px; }
+.motion-copy { padding-top: 10px; }
+.motion-meta { display: block; font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; color: var(--ink-3); }
+.motion-copy .group-title { font-size: 1.05rem; margin: 8px 0 10px; padding: 0; border: 0; letter-spacing: 0; }
+.motion-description { color: var(--ink-2); font-size: .83rem; line-height: 1.9; margin: 0; }
+.motion-media { min-width: 0; }
+.motion-duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; width: 100%; max-width: none; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(var(--stage-top), var(--stage-bot)); }
+.motion-duo figure { min-width: 0; height: 100%; overflow: hidden; }
+.motion-duo video { width: 100%; height: 100%; aspect-ratio: auto; object-fit: contain; object-position: center; border: 0; border-radius: 0; background: transparent; }
 .motion-pair { margin: 0; }
-.motion-pair video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; border: 1px solid var(--line); border-radius: var(--radius); background: var(--stage-top); }
-.motion-row figcaption { color: var(--ink-2); font-weight: 600; }
-.motion-row .hint { max-width: 850px; margin-left: auto; margin-right: auto; }
-.motion-seek { min-width: 0; }
-@media (max-width: 720px) {
-  .motion-duo { gap: 8px; }
-  .motion-row figcaption { font-size: .8rem; }
-  .motion-row .player { gap: 6px; flex-wrap: nowrap; }
-  .motion-row .speed { padding: 4px 6px; font-size: .75rem; }
+.motion-pair video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; border: 1px solid var(--line); border-radius: 12px; background: var(--stage-top); }
+.motion-row .player { max-width: none; border: 0; background: transparent; padding: 0 2px; gap: 10px; margin-top: 10px; flex-wrap: nowrap; }
+.pbtn { width: 30px; height: 30px; }
+.pbtn svg { width: 14px; height: 14px; }
+.motion-seek { min-width: 0; height: 20px; }
+.speed { padding: 4px 7px; font-size: .72rem; }
+.group-title { font-size: .95rem; margin-top: 28px; }
+.scenes { gap: 24px; }
+.scene-frame { aspect-ratio: 16 / 9; box-shadow: none; border-radius: 10px; }
+.scene figcaption b { font-size: .88rem; }
+.scene figcaption span { font-size: .8rem; }
+.hint { font-size: .8rem; }
+.bib pre { font-size: .8rem; border-radius: 10px; }
+footer { max-width: 1000px; margin: 0 auto; padding: 24px 24px 32px; font-size: .78rem; }
+@media (max-width: 860px) {
+  .motion-row { grid-template-columns: 150px minmax(0, 1fr); gap: 20px; }
+  .modules { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .module { padding: 14px; }
+  .comparison-layout { gap: 28px; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 28px 18px 0; }
+  .hero h1 { font-size: 1.65rem; line-height: 1.45; }
+  .subtitle { font-size: .9rem; margin-top: 10px; }
+  .authors { gap: 3px 12px; font-size: .92rem; }
+  .affiliations { font-size: .76rem; line-height: 1.65; }
+  .links { gap: 6px; margin-bottom: 22px; }
+  .btn { font-size: .75rem; padding: 6px 11px; gap: 5px; }
+  .btn svg { width: 14px; height: 14px; }
+  .wrap { padding-inline: 20px; }
+  section { margin-block: 42px; }
+  .band { padding-block: 36px; margin-block: 42px; }
+  .stage-wrap { margin: 0; }
+  .prompt { flex-direction: column; gap: 8px; }
+  .prompt-box { min-width: 0; width: 100%; font-size: .8rem; }
+  .actor figcaption { font-size: .62rem; padding: 2px 7px; bottom: 7px; }
+  .stage-note { font-size: .73rem; }
+  .lead { font-size: .86rem; margin-bottom: 22px; }
+  .abstract { font-size: .88rem; line-height: 1.9; }
+  .task-overview { margin-block: 26px 42px; }
+  .modules { grid-template-columns: 1fr; gap: 10px; }
+  .module { padding: 14px 16px; }
+  .module-no { float: left; margin-right: 12px; line-height: 2; }
+  .module h3 { margin-top: 0; }
+  .module p { font-size: .81rem; }
+  .comparison-layout { grid-template-columns: 1fr; gap: 20px; }
+  .comparison-copy .section-title { text-align: center; }
+  .compare.still { max-width: 290px; }
+  .turntables { gap: 8px; }
+  .spin figcaption { font-size: .72rem; }
+  .motion-row { grid-template-columns: 1fr; gap: 14px; padding: 22px 0; }
+  .motion-copy { padding: 0; }
+  .motion-copy .group-title { margin: 5px 0 7px; }
+  .motion-description { font-size: .8rem; line-height: 1.75; }
+  .motion-row .player { gap: 7px; }
+  .speed { padding: 4px 6px; }
+  .scenes { grid-template-columns: 1fr; gap: 24px; }
+  .scene figcaption { margin-top: 8px; }
+  .hint { font-size: .75rem; }
+  footer { font-size: .72rem; }
 }
