@@ -146,12 +146,10 @@
     requestAnimationFrame(tick);
   });
 
-  /* ---------- 4. PAMG synced duo with shared timeline ---------- */
-  const duo = $('#pamg-duo');
-  if (duo) {
-    const vids = $$('video', duo); const sync = new Sync(vids);
-    const play = $('#pamg-play'), seek = $('#pamg-seek');
-    const show = clip => sync.load(vids.map(v => `${V}${clip}_${v.dataset.variant}.mp4`));
+  /* ---------- 4. Motion rows: independent controls, synced avatars ---------- */
+  $$('.motion-row').forEach(row => {
+    const vids = $$('video', row), sync = new Sync(vids);
+    const play = $('.pbtn', row), seek = $('.motion-seek', row);
     let scrubbing = false;
     const ui = () => {
       play.classList.toggle('paused', !sync.wantPlay);
@@ -159,19 +157,18 @@
     };
     play.addEventListener('click', () => { sync.setPlaying(!sync.wantPlay); ui(); });
     seek.addEventListener('input', () => { scrubbing = true; sync.seek(seek.value / 1000); });
-    seek.addEventListener('change', () => (scrubbing = false));
+    seek.addEventListener('change', () => { scrubbing = false; });
     vids[0].addEventListener('timeupdate', () => {
       if (!scrubbing && vids[0].duration) seek.value = Math.round(vids[0].currentTime / vids[0].duration * 1000);
     });
-    $$('.speed').forEach(b => b.addEventListener('click', () => {
-      $$('.speed').forEach(x => x.classList.toggle('active', x === b)); sync.setRate(+b.dataset.rate);
+    $$('.speed', row).forEach(b => b.addEventListener('click', () => {
+      $$('.speed', row).forEach(x => x.classList.toggle('active', x === b));
+      sync.setRate(+b.dataset.rate);
     }));
-    const promptEl = $('#pamg-prompt');
-    tabs($('#pamg-tabs'), clip => { show(clip); promptEl.textContent = $(`#pamg-tabs [data-clip="${clip}"]`).dataset.prompt; });
-    show($('#pamg-tabs .tab.active').dataset.clip);
-    watch(duo, b => sync.setVisible(b));
+    sync.load(vids.map(v => V + v.dataset.src));
+    watch($('.motion-duo, .motion-pair', row), visible => sync.setVisible(visible));
     ui();
-  }
+  });
 
   /* ---------- navigation state, reveal, copy ---------- */
   const toc = $('.toc');

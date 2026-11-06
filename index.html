@@ -157,27 +157,59 @@
   <section class="band" id="pamg">
     <div class="wrap">
       <h2 class="section-title"><span class="kicker">Motion</span>历史感知运动门控</h2>
-      <p class="lead">文本生成的动作常带有脚底打滑与局部抖动，PAMG 根据历史运动状态对动作序列进行门控优化。下方同一段经 PAMG 优化的动作同时驱动三个角色（正面视角），三段视频共用一个时间轴。</p>
-      <div class="tabs" role="tablist" aria-label="选择动作" id="pamg-tabs">
-        <button role="tab" class="tab active" aria-selected="true" data-clip="pamg_quickwalk" data-prompt="the person is doing a casual quick walk.">快步走</button>
-        <button role="tab" class="tab" aria-selected="false" data-clip="pamg_walk" data-prompt="the person is walking forward.">向前行走</button>
-      </div>
-      <p class="pamg-prompt">动作文本（HumanML3D 测试集原文）：<code id="pamg-prompt">the person is doing a casual quick walk.</code></p>
-      <div class="duo trio" id="pamg-duo">
-        <figure><video muted loop playsinline preload="auto" data-variant="skirt24"></video><figcaption>阿尔托莉雅</figcaption></figure>
-        <figure><video muted loop playsinline preload="auto" data-variant="skirt30"></video><figcaption>爱丽丝</figcaption></figure>
-        <figure><video muted loop playsinline preload="auto" data-variant="skirt36"></video><figcaption>时崎狂三</figcaption></figure>
-      </div>
-      <div class="player" id="pamg-player">
-        <button class="pbtn" id="pamg-play" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
-        <input type="range" id="pamg-seek" min="0" max="1000" value="0" aria-label="时间轴">
-        <div class="speeds" role="group" aria-label="播放速度">
-          <button class="speed" data-rate="0.25">0.25×</button>
-          <button class="speed" data-rate="0.5">0.5×</button>
-          <button class="speed active" data-rate="1">1×</button>
+      <p class="lead">PAMG 根据历史运动状态对文本生成的动作进行门控优化。下方展示向前行走、后空翻与双人挥拳踢腿，均采用左侧 30° 视角；每行可独立暂停、拖动时间轴和慢放。</p>
+      <div class="motion-row" id="motion-walk">
+        <h3 class="group-title">向前行走</h3>
+        <p class="pamg-prompt">动作文本：<code>the person is walking forward.</code></p>
+        <div class="duo motion-duo">
+          <figure><video muted loop playsinline preload="metadata" data-src="pamg_walk_skirt30_left30.mp4" poster="static/videos/pamg_walk_skirt30_left30.jpg" aria-label="爱丽丝向前行走"></video><figcaption>爱丽丝</figcaption></figure>
+          <figure><video muted loop playsinline preload="metadata" data-src="pamg_walk_skirt36_left30.mp4" poster="static/videos/pamg_walk_skirt36_left30.jpg" aria-label="时崎狂三向前行走"></video><figcaption>时崎狂三</figcaption></figure>
         </div>
+        <div class="player">
+          <button class="pbtn" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
+          <input type="range" class="motion-seek" min="0" max="1000" value="0" aria-label="向前行走时间轴">
+          <div class="speeds" role="group" aria-label="向前行走播放速度">
+            <button class="speed" data-rate="0.25">0.25×</button>
+            <button class="speed" data-rate="0.5">0.5×</button>
+            <button class="speed active" data-rate="1">1×</button>
+          </div>
+        </div>
+        <p class="hint">HY-Motion 根据 HumanML3D 文本生成动作，经 PAMG 优化后同步驱动两个角色。人物来自 AI 绘制图像，三维资产为人工修复版本。</p>
       </div>
-      <p class="hint">动作由 HY-Motion 根据 HumanML3D 测试集文本生成，经 PAMG 优化后驱动。三个人物取自裙摆测试集中的 AI 绘制角色图（非官方原画），三维资产为人工修复版本。</p>
+      <div class="motion-row" id="motion-backflip">
+        <h3 class="group-title">后空翻</h3>
+        <figure class="motion-pair">
+          <video muted loop playsinline preload="metadata" data-src="action_row_backflip.mp4" poster="static/videos/action_row_backflip.jpg" aria-label="MXZ 与丛雨同步后空翻"></video>
+          <figcaption>MXZ · 丛雨</figcaption>
+        </figure>
+        <div class="player">
+          <button class="pbtn" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
+          <input type="range" class="motion-seek" min="0" max="1000" value="0" aria-label="后空翻时间轴">
+          <div class="speeds" role="group" aria-label="后空翻播放速度">
+            <button class="speed" data-rate="0.25">0.25×</button>
+            <button class="speed" data-rate="0.5">0.5×</button>
+            <button class="speed active" data-rate="1">1×</button>
+          </div>
+        </div>
+        <p class="hint">HY-Motion 文本驱动：起跳后空翻，双脚落地。两个角色共享同一段动作，在同一三维画面中渲染。</p>
+      </div>
+      <div class="motion-row" id="motion-fight">
+        <h3 class="group-title">挥拳踢腿 · 面对面</h3>
+        <figure class="motion-pair">
+          <video muted loop playsinline preload="metadata" data-src="action_row_fight.mp4" poster="static/videos/action_row_fight.jpg" aria-label="桐生一马与真岛吾朗面对面挥拳踢腿"></video>
+          <figcaption>桐生一马 · 真岛吾朗</figcaption>
+        </figure>
+        <div class="player">
+          <button class="pbtn" aria-label="暂停"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-pause" d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path class="ico-play" d="M7 5l12 7-12 7z" fill="currentColor"/></svg></button>
+          <input type="range" class="motion-seek" min="0" max="1000" value="0" aria-label="挥拳踢腿时间轴">
+          <div class="speeds" role="group" aria-label="挥拳踢腿播放速度">
+            <button class="speed" data-rate="0.25">0.25×</button>
+            <button class="speed" data-rate="0.5">0.5×</button>
+            <button class="speed active" data-rate="1">1×</button>
+          </div>
+        </div>
+        <p class="hint">HY-Motion 文本驱动：先连续出拳，再抬腿前踢。两个角色分别向内转 90°，在同一三维场景中面对面展示。</p>
+      </div>
     </div>
   </section>
 

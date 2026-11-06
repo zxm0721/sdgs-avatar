@@ -220,7 +220,7 @@ figcaption { color: var(--ink-2); font-size: .9rem; margin-top: 10px; text-align
 .pbtn .ico-play { display: none; }
 .pbtn.paused .ico-play { display: block; }
 .pbtn.paused .ico-pause { display: none; }
-#pamg-seek { flex: 1; accent-color: var(--accent); }
+.motion-seek { flex: 1; accent-color: var(--accent); }
 .speeds { display: flex; gap: 2px; }
 .speed { border: 0; background: none; padding: 4px 8px; border-radius: 999px; font-size: .82rem; color: var(--ink-3); cursor: pointer; font-family: var(--mono); }
 .speed.active { background: var(--accent-soft); color: var(--accent); }
@@ -294,3 +294,22 @@ footer p { margin: 4px 0; }
 .duo.trio { max-width: 900px; }
 .stage { max-width: 900px; background: linear-gradient(#f6f5f1, #e9e7e1); }
 .duo.trio video { background: #f4f3ef; }
+
+/* Three motion rows, with an independent timeline for each. */
+.motion-row { max-width: 900px; margin: 0 auto; }
+.motion-row + .motion-row { margin-top: 42px; }
+.motion-row .group-title { margin-top: 26px; }
+.motion-row .player { max-width: 900px; }
+.motion-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 720px; }
+.motion-duo video { aspect-ratio: 2 / 3; object-fit: contain; object-position: center; }
+.motion-pair { margin: 0; }
+.motion-pair video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; border: 1px solid var(--line); border-radius: var(--radius); background: var(--stage-top); }
+.motion-row figcaption { color: var(--ink-2); font-weight: 600; }
+.motion-row .hint { max-width: 850px; margin-left: auto; margin-right: auto; }
+.motion-seek { min-width: 0; }
+@media (max-width: 720px) {
+  .motion-duo { gap: 8px; }
+  .motion-row figcaption { font-size: .8rem; }
+  .motion-row .player { gap: 6px; flex-wrap: nowrap; }
+  .motion-row .speed { padding: 4px 6px; font-size: .75rem; }
+}
